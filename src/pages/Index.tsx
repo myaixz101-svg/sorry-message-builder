@@ -1,39 +1,62 @@
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import StepOne from '@/components/steps/StepOne';
+import StepTwo from '@/components/steps/StepTwo';
+import StepThree from '@/components/steps/StepThree';
+import StepFour from '@/components/steps/StepFour';
+import StepFive from '@/components/steps/StepFive';
 import FloatingHearts from '@/components/FloatingHearts';
-import ApologyCard from '@/components/ApologyCard';
-import LoveQuotes from '@/components/LoveQuotes';
-import { Heart } from 'lucide-react';
+import ProgressIndicator from '@/components/ProgressIndicator';
+
+const TOTAL_STEPS = 5;
 
 const Index = () => {
+  const [currentStep, setCurrentStep] = useState(1);
+
+  const handleNext = () => {
+    if (currentStep < TOTAL_STEPS) {
+      setCurrentStep(prev => prev + 1);
+    }
+  };
+
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return <StepOne onNext={handleNext} />;
+      case 2:
+        return <StepTwo onNext={handleNext} />;
+      case 3:
+        return <StepThree onNext={handleNext} />;
+      case 4:
+        return <StepFour onNext={handleNext} />;
+      case 5:
+        return <StepFive />;
+      default:
+        return <StepOne onNext={handleNext} />;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-romantic relative overflow-hidden">
-      {/* Floating Hearts Background */}
       <FloatingHearts />
       
-      {/* Decorative Elements */}
-      <div className="absolute top-10 left-10 opacity-20">
-        <Heart className="w-16 h-16 text-primary fill-primary animate-sway" />
-      </div>
-      <div className="absolute top-20 right-16 opacity-15">
-        <Heart className="w-12 h-12 text-accent fill-accent animate-float animation-delay-500" />
-      </div>
-      <div className="absolute bottom-32 left-20 opacity-20">
-        <Heart className="w-10 h-10 text-primary fill-primary animate-bounce-gentle animation-delay-300" />
-      </div>
-      <div className="absolute bottom-20 right-10 opacity-15">
-        <Heart className="w-14 h-14 text-accent fill-accent animate-sway animation-delay-700" />
-      </div>
+      {/* Progress Indicator */}
+      <ProgressIndicator currentStep={currentStep} totalSteps={TOTAL_STEPS} />
 
       {/* Main Content */}
-      <main className="relative z-10 min-h-screen flex flex-col items-center justify-center py-12">
-        <ApologyCard />
-        <LoveQuotes />
-        
-        {/* Footer */}
-        <footer className="mt-12 text-center">
-          <p className="font-body text-sm text-muted-foreground flex items-center justify-center gap-2">
-            Made with <Heart className="w-4 h-4 text-primary fill-primary animate-heartbeat" /> just for you
-          </p>
-        </footer>
+      <main className="relative z-10 min-h-screen flex flex-col items-center justify-center py-16 px-4">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentStep}
+            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -50, scale: 0.95 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="w-full max-w-lg"
+          >
+            {renderStep()}
+          </motion.div>
+        </AnimatePresence>
       </main>
     </div>
   );
