@@ -3,12 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import StepOne from '@/components/steps/StepOne';
 import StepTwo from '@/components/steps/StepTwo';
 import StepThree from '@/components/steps/StepThree';
+import StepMusic from '@/components/steps/StepMusic';
 import StepFour from '@/components/steps/StepFour';
 import StepFive from '@/components/steps/StepFive';
 import FloatingHearts from '@/components/FloatingHearts';
 import ProgressIndicator from '@/components/ProgressIndicator';
 
-const TOTAL_STEPS = 5;
+const TOTAL_STEPS = 6;
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -28,8 +29,10 @@ const Index = () => {
       case 3:
         return <StepThree onNext={handleNext} />;
       case 4:
-        return <StepFour onNext={handleNext} />;
+        return <StepMusic onNext={handleNext} />;
       case 5:
+        return <StepFour onNext={handleNext} />;
+      case 6:
         return <StepFive />;
       default:
         return <StepOne onNext={handleNext} />;
